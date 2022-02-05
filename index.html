@@ -15,7 +15,38 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
+    <h1 class="text-center mt-3">Firestore with Vanilla JS</h1>
     <div class="container">
+      <div class="form-div">
+        <h3>Add/Update User:</h3>
+        <form id="user-form">
+          <label for="firstName">First Name: </label>
+          <input
+            type="text"
+            id="first-name"
+            class="form-control mb-3"
+            placeholder="First Name"
+            autofocus
+          />
+
+          <label for="lastName">Last Name: </label>
+          <input
+            type="text"
+            id="last-name"
+            class="form-control mb-3"
+            placeholder="Last Name"
+          />
+
+          <label for="email">Email: </label>
+          <input
+            type="email"
+            id="email"
+            class="form-control mb-3"
+            placeholder="Email"
+          />
+          <button class="btn btn-success" id="btn-user-form">Save</button>
+        </form>
+      </div>
       <h1 class="text-center">Users List</h1>
       <div id="users-table">
         <table class="table text-center">

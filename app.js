@@ -3,7 +3,7 @@ import {
   getFirestore,
   collection,
   getDocs,
-  onSnapshot,
+  addDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js";
 
 // Your firebase configuration
@@ -17,11 +17,16 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 
+const userForm = document.getElementById("user-form");
 const tableBody = document.getElementById("table-body");
+
 var userCount = 0;
-window.addEventListener("DOMContentLoaded", async (event) => {
+window.addEventListener("DOMContentLoaded", (event) => {
   console.log("DOM fully loaded and parsed");
   // Get data from firestore.
+  getUsers();
+});
+async function getUsers() {
   const querySnapshot = await getDocs(collection(db, "users"));
   querySnapshot.forEach((doc) => {
     console.log(doc.id, "=>", doc.data());
@@ -36,4 +41,25 @@ window.addEventListener("DOMContentLoaded", async (event) => {
         </tr>
     `;
   });
+}
+
+userForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const firstName = userForm["first-name"];
+  const lastName = userForm["last-name"];
+  const email = userForm["email"];
+
+  try {
+    await addDoc(collection(db, "users"), {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      email: email.value,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  userForm.reset();
+  firstName.focus();
+  location.reload();
 });
