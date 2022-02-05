@@ -7,6 +7,7 @@ import {
   getDoc,
   updateDoc,
   doc,
+  deleteDoc,
 } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-firestore.js";
 
 // Your firebase configuration
@@ -51,12 +52,13 @@ async function getUsers() {
             <td> ${user.email} </td>
             <td> 
                 <button class="btn btn-info btn-edit" data-id="${doc.id}">Edit</button> 
-                <button class="btn btn-danger btn-delete" data-id="${doc.id}>Delete</button> 
+                <button class="btn btn-danger btn-delete" data-id="${doc.id}">Delete</button> 
             </td>
         </tr>
     `;
   });
 
+  // Update functionality.
   const btnsEdit = tableBody.querySelectorAll(".btn-edit");
   btnsEdit.forEach((btn) => {
     btn.addEventListener("click", async (e) => {
@@ -71,6 +73,25 @@ async function getUsers() {
         userForm["btn-user-form"].innerText = "Update";
       } catch (error) {
         console.log(error);
+      }
+    });
+  });
+
+  // Delete functionality.
+  const btnsDelete = tableBody.querySelectorAll(".btn-delete");
+  btnsDelete.forEach((btn) => {
+    btn.addEventListener("click", async (e) => {
+      if (confirm("Are you sure you want to delete this user?") == true) {
+        try {
+          id = e.target.dataset.id;
+          console.log(id);
+          await deleteDoc(doc(db, "users", id));
+          location.reload();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        console.log("Delete cancelled!");
       }
     });
   });
